@@ -685,11 +685,19 @@ layout: section
 # Integrations
 
 ---
+layout: two-cols-header
+---
 
 # HTMX
 
+::left::
+
 - https://htmx.org/examples/
 - https://templ.guide/server-side-rendering/htmx
+
+::right::
+
+<img src="hypermedia.jpg" width="200"/>
 
 ---
 layout: section
@@ -838,32 +846,32 @@ templ Hello(screenBG, printBG string) {
         background-color: {{ printBG }};
       }
     }
+    .name {
+      font-size: 1.5em;
+    }
   </style>
 }
 ```
 
 ---
 
-# Improvements to script handling
+# Render once
 
 ```go
-templ Hello(screenBG, printBG string) {
-  <style type="text/css">
-    body {
-      background-color: {{ screenBG }};
-    }
-    @media print {
-      body {
-        background-color: {{ printBG }};
+templ Hello(name string) {
+  templ.OncePerRequest(ctx) {
+    <style type="text/css">
+      .name {
+        font-size: 1.5em;
       }
-    }
-  </style>
+    </style>
+  }
+  <div class="name">Hello, { name }</div>
 }
 ```
 
 ---
 
-# templ is faster
+# HTML LSP
 
-<img src="chart.png" width="800"/>
-
+<img src="html_autocomplete.png" width="500"/>
