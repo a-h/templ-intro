@@ -7,86 +7,33 @@ lineNumbers: false
 # templ intro
 
 ## https://templ.guide
+
+<br>
+
 ## https://github.com/a-h/templ
+
+<br>
+
 ## @adrianhesketh
 
 ---
-layout: section
----
 
-# Use an SPA when you care about the user experience
-
----
-
-# The user experience
-
-![loading](loading.gif)
-
----
-layout: section
----
-
-# Well, at least the developer experience is good
-
----
-
-# The developer experience
-
-<img src="react_developer.webp" width="300"/>
-
----
-layout: two-cols-header
----
-
-# Using React
-
-::left::
-
-- Linting rules
-- TypeScript
-- Bundlers / transpilers
-- Isomorphic rendering
-- Test frameworks
-- State management
-- Language complexity
-- Performance
-
-::right::
-
-<img src="js.png" width="300"/>
-
----
-layout: section
----
-
-# Thought experiment...
-
----
-layout: section
----
-
-# Would using an SSR-only approach actually be worse?
-
----
-
-# SSR
+# Why might SSR with Go be a good choice?
 
 * Needed for SEO
 * Required for accessibility
 * Have to wait for data from the Server anyway
-* Can be in a faster language
-* Can use new techniques like HTMX and Hotwire
-* Can use Websockets and Server Sent Events
-* No big JavaScript bundles
-  - https://tonsky.me/blog/js-bloat/
+* Performance
+* HTMX
+* Shorter learning curve
 
 ---
 
 # What do we need?
 
-- Generate HTML on the server
+- A templating library to insert data into HTML
 - Match developer experience of React
-- Component libraries
+- An ecosystem of libraries and tools
 
 ---
 
@@ -703,7 +650,6 @@ layout: two-cols-header
 - https://htmx.org/examples/
 - https://templ.guide/server-side-rendering/htmx
 - https://github.com/joerdav/shopping-list/
-- SSE and websocket integration
 
 ::right::
 
@@ -943,8 +889,10 @@ layout: section
 
 # Create React components
 
-```tsx {|1-3|5-12}
+```tsx {|5|7-14}
+// components.tsx
 import React from "react";
+import { createRoot } from 'react-dom/client';
 
 export const Hello = (name: string) => (<div>Hello {name} (Client-side React, rendering server-side data)</div>);
 
@@ -1082,7 +1030,7 @@ templ Hello(name string) {
 
 &bullet; Commit - `git add --all && git commit -m "first commit"`
 
-&bullet; Push - `gh repo create github.com/a-h/hellotempl`
+&bullet; Push - `gh repo create --public github.com/a-h/hellotempl --source . --push`
 
 </v-clicks>
 
@@ -1098,25 +1046,36 @@ templ Hello(name string) {
 
 <v-clicks>
 
-```go {3|5-7}
+```go {3|5-15|12}
 package main
 
 import "github.com/a-h/hellotempl"
 
 templ Page() {
-  @hellotempl.Hello("world")
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Hello</title>
+		</head>
+		<body>
+			@hellotempl.Hello("world")
+		</body>
+	</html>
 }
 ```
 
 </v-clicks>
 
 ---
+
 # Use a ready-made library
 
-* gopress.io
+* https://gopress.io
 * https://github.com/indaco/goaster
 
-<img src="gopress.png" width="800"/>
+<br>
+
+<img src="gopress.png" width="600"/>
 
 ---
 layout: section
@@ -1202,7 +1161,7 @@ templ Component() {
 
 # Streaming reponses
 
-```go {|9-13|10-12}
+```go {|1|9-13|10-12}
 templ Page(data chan string) {
 	<!DOCTYPE html>
 	<html>
@@ -1235,10 +1194,10 @@ layout: two-cols-header
 
 ::left::
 
-* Maintained by me and @joerdav.
+* Maintained by me and @joerdav
 * &gt;100 contributors
-* 6.2k stars
-* 2k projects using it
+* 6.9k stars
+* Real projects using it
 
 ::right::
 
